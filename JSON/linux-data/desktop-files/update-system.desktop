@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Update System
+Comment=Update System directly
+Icon=/home/sajad/linux-data/desktop-files/update.png
+Exec=/home/sajad/linux-data/scripts/update-system.sh
+Path=/home/sajad/linux-data/
+Type=Application
+Terminal=true
+Categories=Utility;
+GenericName=Update System
+X-KeepTerminal=true

@@ -1,0 +1,13 @@
+sudo apt-get install -y default-jdk
+sudo apt-get install -y libimage-exiftool-perl
+sudo apt-get install -y imagemagick
+sudo apt-get install -y ffmpeg
+sudo apt-get install -y gparted
+sudo apt-get install -y nmon
+sudo apt-get install -y lshw
+sudo apt-get install -y hardinfo
+sudo apt-get install -y gnome-disk-utility
+sudo apt-get install -y gpsbabel 
+sudo apt-get install -y gpsbabel-gui 
+sudo apt-get install -y doublecmd-gtk
+sudo apt-get install -y gthumb

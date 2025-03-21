@@ -1,0 +1,7 @@
+$$$Videos_im_gleichen_Verzeichnis$$$
+$$$Keine_GPS_Daten$$$
+$$$---Kein_Back_Button_auf_oberster_Ebene$$$
+$$$UrlBilder$$$	https://tommy.de.cool/htaccess/2023_01_Tommy_ist_da/
+$$$UrlVideos$$$	https://unterwegs-mit-wohnmobil.github.io/medien/Tommy/2023_01_Tommy_ist_da/
+$$$VerzVideos$$$	github/Medien/Tommy/2023_01_Tommy_ist_da/
+Tommy_2023-01-29-08-38-34	Tommy fühlt sich wohl	Tommy fühlt sich wohl	9	

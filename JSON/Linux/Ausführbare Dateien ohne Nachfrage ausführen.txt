@@ -1,0 +1,3 @@
+Im Dateimanager in den Einstellungen ändern:
+
+Einstellungen ⇒ Verhalten ⇒ Ausführbare Textdateien ⇒ immer ausführen

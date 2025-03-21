@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Geotag
+Comment=Geotag
+Icon=/usr/share/pixmaps/openjdk-11.xpm
+Exec=/usr/lib/jvm/java-8-openjdk-armhf/jre/bin/java -jar /home/pi/Daten/Jar/geotag.jar
+Path=/home/pi/Daten/Jar
+Type=Application
+Encoding=UTF-8
+Terminal=false
+Categories=Utility;
+Name[de_DE]=Performance Montor.desktop

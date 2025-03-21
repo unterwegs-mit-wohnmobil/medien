@@ -1,0 +1,7 @@
+$$$Videos_im_gleichen_Verzeichnis$$$
+$$$Keine_GPS_Daten$$$
+$$$---Kein_Back_Button_auf_oberster_Ebene$$$
+$$$UrlBilder$$$	https://tommy.de.cool/htaccess/2023_01_Tommy_geht_es_besser/
+$$$UrlVideos$$$	https://unterwegs-mit-wohnmobil.github.io/medien/Tommy/2023_01_Tommy_geht_es_besser/
+$$$VerzVideos$$$	github/Medien/Tommy/2023_01_Tommy_geht_es_besser/
+3_Tommy_geht_es_besser_01	Tommy geht es besser	Tommy geht es besser	69	

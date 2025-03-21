@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Icon=system-file-manager
+Name=File Manager PCManFM Root
+Name[de]=PCManFM Dateimanager Root
+GenericName[de]=Dateimanager Root
+Comment=Browse the file system and manage the files as  Root
+Comment[de]=Das Dateisystem durchsuchen und Dateien verwalten als  Root
+Categories=System;FileTools;FileManager;Utility;Core;GTK;
+Exec=sudo pcmanfm %U
+StartupNotify=true
+Terminal=false
+MimeType=inode/directory;

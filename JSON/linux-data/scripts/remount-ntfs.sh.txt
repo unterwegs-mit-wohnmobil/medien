@@ -1,0 +1,3 @@
+sudo umount /dev/sda3
+sudo ntfsfix /dev/sda3
+sudo mount /dev/sda3

@@ -1,0 +1,87 @@
+<style>
+	body {font-family: Tahoma, Verdana, sans-serif;}
+	.scrollmenu { overflow: auto; white-space: nowrap; }
+	.scrollmenu a 
+	{
+		display: inline-block;
+		padding: 2px;
+		color: black;
+		font-family: Tahoma, Verdana, sans-serif;
+		font-size: 2.7vh;
+	}
+	.scrollmenu a img 
+	{
+		cursor: pointer; 
+		height: auto;
+		max-width: none;
+		height: 9vh;
+		max-height: 9vh;
+		object-fit: contain;
+	}
+	.scrollmenu a video
+	{
+		opacity: 0.8;
+		cursor: pointer;
+		height: auto;
+		max-width: none;
+		height: 9vh;
+		max-height: 9vh;
+		object-fit: contain;
+	}
+	.scrollmenu a .tooltiptext 
+	{
+		visibility: hidden;
+		top: 0%;
+		left: 1vw;
+		background-color: black;
+		color: #fff;
+		opacity: 0.8;
+		border-radius: 6px;
+		padding: 2px 0;
+		position: absolute;
+		z-index: 1;
+	}
+	.scrollmenu a:hover .tooltiptext { visibility: visible;} 
+	.container .contooltiptext 
+	{
+		visibility: visible;
+		top: 0%;
+		right: 1vw;
+		background-color: black;
+		color: #fff;
+		border-radius: 6px;
+		padding: 2px 0;
+		position: absolute;
+		z-index: 1;
+		font-family: Tahoma, Verdana, sans-serif;
+		font-size: 2.7vh;
+	}
+	.modal 
+	{
+		display: none; /* Hidden by default */
+		width: auto; 
+		height: auto; 
+		background-color: rgb(0,0,0); /* Fallback color */
+		background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	}
+	.modal-content 
+	{
+		background-color: #fefefe;
+		margin: auto;
+		padding: 20px;
+		border: 1px solid #888;
+		width: auto;
+	}
+	.close {
+		color: #aaaaaa;
+		float: right;
+		font-size: 2vh;
+		font-weight: bold;
+	}
+	.close:hover,
+	.close:focus {
+		color: #000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+</style>

@@ -1,0 +1,7 @@
+$$$Videos_im_gleichen_Verzeichnis$$$
+$$$Keine_GPS_Daten$$$
+$$$---Kein_Back_Button_auf_oberster_Ebene$$$
+$$$UrlBilder$$$	https://tommy.de.cool/htaccess/2023_02_Tommy_erste_Tage/
+$$$UrlVideos$$$	https://unterwegs-mit-wohnmobil.github.io/medien/Tommy/2023_02_Tommy_erste_Tage/
+$$$VerzVideos$$$	github/Medien/Tommy/2023_02_Tommy_erste_Tage/
+2023-02-02-08-34-25	Tommy entdeckt Neues	Tommy entdeckt Neues	9	

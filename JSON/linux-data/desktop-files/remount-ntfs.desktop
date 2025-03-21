@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Remount NTFS Partition
+Comment=Remount NTFS Partition
+Icon=/home/sajad/linux-data/desktop-files/remount.png
+Exec=/home/sajad/linux-data/scripts/remount-ntfs.sh
+Path=/home/sajad/linux-data/
+Type=Application
+Terminal=true
+Categories=Utility;
+GenericName=Fix and Remount NTFS
+X-KeepTerminal=true

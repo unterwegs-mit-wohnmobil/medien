@@ -1,0 +1,9 @@
+$$$Videos_im_gleichen_Verzeichnis$$$
+$$$Keine_GPS_Daten$$$
+$$$---Kein_Back_Button_auf_oberster_Ebene$$$
+$$$UrlBilder$$$	https://tommy.de.cool/htaccess/2023_08_bis_12_Tommy/
+$$$UrlVideos$$$	https://unterwegs-mit-wohnmobil.github.io/medien/Tommy/2023_08_bis_12_Tommy/
+$$$VerzVideos$$$	github/Medien/Tommy/2023_08_bis_12_Tommy/
+PlWqRc_M50_3115	Tommy hat ein großes Stöckchen gefunden	Tommy hat ein großes Stöckchen gefunden	16	
+PwQqBt_M50_3519			6	
+PWvPfG_iPhSE_3998			39	

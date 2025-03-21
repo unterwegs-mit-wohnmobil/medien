@@ -1,0 +1,6 @@
+$$$Videos_im_gleichen_Verzeichnis$$$
+$$$Keine_GPS_Daten$$$
+$$$---Kein_Back_Button_auf_oberster_Ebene$$$
+$$$UrlBilder$$$	https://tommy.de.cool/htaccess/2022_10_Tommy_Inserat/
+$$$UrlVideos$$$	https://unterwegs-mit-wohnmobil.github.io/medien/Tommy/2022_10_Tommy_Inserat/
+$$$VerzVideos$$$	github/Medien/Tommy/2022_10_Tommy_Inserat/

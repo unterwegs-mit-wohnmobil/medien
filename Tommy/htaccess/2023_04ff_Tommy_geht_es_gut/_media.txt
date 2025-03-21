@@ -1,0 +1,8 @@
+$$$Videos_im_gleichen_Verzeichnis$$$
+$$$Keine_GPS_Daten$$$
+$$$---Kein_Back_Button_auf_oberster_Ebene$$$
+$$$UrlBilder$$$	https://tommy.de.cool/htaccess/2023_04ff_Tommy_geht_es_gut/
+$$$UrlVideos$$$	https://unterwegs-mit-wohnmobil.github.io/medien/Tommy/2023_04ff_Tommy_geht_es_gut/
+$$$VerzVideos$$$	github/Medien/Tommy/2023_04ff_Tommy_geht_es_gut/
+NqWkQ_iPhSE_7904	Zahnpflege macht Spaß	Zahnpflege macht Spaß	17	
+TdIiE_iPhSE_7907	Zahnpflege macht Spaß	Zahnpflege macht Spaß	17	

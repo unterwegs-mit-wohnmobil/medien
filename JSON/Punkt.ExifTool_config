@@ -1,0 +1,742 @@
+#------------------------------------------------------------------------------
+# File:         example.config
+#
+# Description:  Example user configuration file for Image::ExifTool
+#
+# Notes:        This example file shows how to define your own shortcuts and
+#               add new EXIF, IPTC, XMP, PNG, MIE and Composite tags, as well
+#               as how to specify preferred lenses for the LensID tag, and
+#               define new file types and default ExifTool option values.
+#
+#               Note that unknown tags may be extracted even if they aren't
+#               defined, but tags must be defined to be written.  Also note
+#               that it is possible to override an existing tag definition
+#               with a user-defined tag.
+#
+#               To activate this file, rename it to ".ExifTool_config" and
+#               place it in your home directory or the exiftool application
+#               directory.  (On Windows and Mac systems this must be done via
+#               the command line since the GUI's don't allow filenames to begin
+#               with a dot.  Use the "rename" command in Windows or "mv" on the
+#               Mac.)  This causes ExifTool to automatically load the file when
+#               run.  Your home directory is determined by the first defined of
+#               the following environment variables:
+#
+#                   1.  EXIFTOOL_HOME
+#                   2.  HOME
+#                   3.  HOMEDRIVE + HOMEPATH
+#                   4.  (the current directory)
+#
+#               Alternatively, the -config option of the exiftool application
+#               may be used to load a specific configuration file (note that
+#               this must be the first option on the command line):
+#
+#                   exiftool -config example.config ...
+#
+#               This example file defines the following 16 new tags as well as
+#               a number of Shortcut and Composite tags:
+#
+#                   1.  EXIF:NewEXIFTag
+#                   2.  GPS:GPSPitch
+#                   3.  GPS:GPSRoll
+#                   4.  IPTC:NewIPTCTag
+#                   5.  XMP-xmp:NewXMPxmpTag
+#                   6.  XMP-exif:GPSPitch
+#                   7.  XMP-exif:GPSRoll
+#                   8.  XMP-xxx:NewXMPxxxTag1
+#                   9.  XMP-xxx:NewXMPxxxTag2
+#                  10.  XMP-xxx:NewXMPxxxTag3
+#                  11.  XMP-xxx:NewXMPxxxStruct
+#                  12.  PNG:NewPngTag1
+#                  13.  PNG:NewPngTag2
+#                  14.  PNG:NewPngTag3
+#                  15.  MIE-Meta:NewMieTag1
+#                  16.  MIE-Test:NewMieTag2
+#
+#               For detailed information on the definition of tag tables and
+#               tag information hashes, see lib/Image/ExifTool/README.
+#------------------------------------------------------------------------------
+
+# Shortcut tags are used when extracting information to simplify
+# commonly used commands.  They can be used to represent groups
+# of tags, or to provide an alias for a tag name.
+
+# NOTE: All tag names used in the following tables are case sensitive.
+
+# The %Image::ExifTool::UserDefined hash defines new tags to be added
+# to existing tables.
+%Image::ExifTool::UserDefined = (
+    # All EXIF tags are added to the Main table, and WriteGroup is used to
+    # specify where the tag is written (default is ExifIFD if not specified):
+    # Composite tags are added to the Composite table:
+    'Image::ExifTool::Composite' => {
+        # Composite tags are unique:  The Require/Desire elements specify
+        # tags that must/may exist, and the keys of these hashes are used as
+        # indices in the @val array of the ValueConv expression to access
+        # the numerical (-n) values of these tags.  All Require'd tags must
+        # exist for the Composite tag to be evaluated.  If no Require'd tags
+        # are specified, then at least one of the Desire'd tags must exist.
+        # See the Composite table in Image::ExifTool::Exif for more
+        # examples, and lib/Image/ExifTool/README for all of the details.
+        BaseName => {
+            Require => {
+                0 => 'FileName',
+            },
+            # remove the extension from FileName
+            ValueConv => '$val[0] =~ /(.*)\./ ? $1 : $val[0]',
+        },
+        # the next few examples demonstrate simplifications which may be
+        # used if only one tag is Require'd or Desire'd:
+        # 1) the Require lookup may be replaced with a simple tag name
+        # 2) "$val" may be used to represent "$val[0]" in the expression
+        FileExtension => {
+            Require => 'FileName',
+            ValueConv => '$val=~/\.([^.]*)$/; $1',
+        },
+        Parent => {
+            Require => {
+                0 => 'Directory',
+            },
+            ValueConv => '$val[0] =s/.* - // ? $_ : undef',
+        },
+        # use Tags FileNumber (Canon EOS 400D) and ImageHistory (Canon EOS M50) as one Tag 
+        StammNummer => {
+            Desire => {
+                0 => 'SerialNumber',
+                1 => 'FileNumber',
+                2 => 'ImageHistory',
+            },
+           ValueConv => '(defined($val[0]) and $val[0] eq 1881161319 and defined($val[1]) and length($val[1])>6) ? substr($val[1], 0, 3) . "-" . substr($val[1], 3, 7) : (defined($val[2]) ? $val[2] : "" )',
+        },
+        # use Tags DateTimeOriginal or (if not exists) CreateDate or (if both not exists) CreationDate 
+        DateTimeDurchschauMimik => {
+            Desire => {
+                0 => 'DateTimeOriginal',
+                1 => 'CreateDate',
+                2 => 'CreationDate',
+            },
+           ValueConv => '(defined($val[0]) and length($val[0])) > 0 ? $val[0] : (defined($val[1]) and length($val[1])) > 0 ? $val[1] : defined($val[2]) ? $val[2] : ""',
+        },
+        # use Tags Album or (if not exists) ScanAlbum 
+        AlbumDurchschauMimik => {
+            Desire => {
+                0 => 'Album',
+                1 => 'ScanAlbum',
+            },
+           ValueConv => '(defined($val[0]) and length($val[0])) > 0 ? $val[0] : (defined($val[1]) and length($val[1])) > 0 ? $val[1] : ""',
+        },
+        # use Tags StartingPage or (if not exists) ScanVonDatum 
+        VonDatumDurchschauMimik => {
+            Desire => {
+                0 => 'StartingPage',
+                1 => 'ScanVonDatum',
+            },
+           ValueConv => '(defined($val[0]) and length($val[0])) > 0 ? $val[0] : (defined($val[1]) and length($val[1])) > 0 ? $val[1] : ""',
+        },
+        # use Tags EndingPage or (if not exists) ScanBisDatum 
+        BisDatumDurchschauMimik => {
+            Desire => {
+                0 => 'EndingPage',
+                1 => 'ScanBisDatum',
+            },
+           ValueConv => '(defined($val[0]) and length($val[0])) > 0 ? $val[0] : (defined($val[1]) and length($val[1])) > 0 ? $val[1] : ""',
+        },
+        # use Tags MakeOriginal or (if not exists) Make 
+        MakeDurchschauMimik => {
+            Desire => {
+                0 => 'MakeOriginal',
+                1 => 'Make',
+            },
+           ValueConv => '(defined($val[0]) and length($val[0])) > 0 ? $val[0] : (defined($val[1]) and length($val[1])) > 0 ? $val[1] : ""',
+        },
+        # use Tags ModelOriginal or (if not exists) Model 
+        ModelDurchschauMimik => {
+            Desire => {
+                0 => 'ModelOriginal',
+                1 => 'Model',
+            },
+           ValueConv => '(defined($val[0]) and length($val[0])) > 0 ? $val[0] : (defined($val[1]) and length($val[1]) > 0) ? $val[1] : ""',
+        },
+        # use Tags ImageDescription or (if not exists) AlbumDurchschauMimik, if AlbumIfImageDescriptionEmpty is not empty 
+        # nur XMP:ImageDescription verwenden, da Videos keine EXIF:ImageDescription haben
+        ImageDescriptionDurchschauMimik => {
+            Desire => {
+                0 => 'XMP:ImageDescription',
+                1 => 'AlbumDurchschauMimik',
+                2 => 'AlbumIfImageDescriptionEmpty',
+            },
+           ValueConv => '(defined($val[0]) and length($val[0]) > 0) ? $val[0] : (defined($val[1]) and length($val[1]) > 0 and defined($val[2]) and length($val[2]) > 0) ? (rindex($val[1], " ") > 0 ? substr($val[1],0,rindex($val[1], " ")) : $val[1]) : ""',
+        },
+        # use ReflectaBaseNumber 
+        	ReflectaBaseNumber => {
+            Desire => {
+                0 => 'BaseName',
+                1 => 'ScanMake',
+            },
+           ValueConv => '(defined($val[1]) and $val[1]="Reflecta") ? "999-" . substr($val[0],4) : ""',
+        },
+        # calculate physical Bitrate based on FileSize and Duration
+        AvgBitrateCalc => {
+            Require => {
+                0 => 'FileSize',
+                1 => 'Duration',
+                2 => 'AvgBitrate',
+            },
+            ValueConv => '$val[0]/($val[1]*128)',
+            # (the @prt array contains print-formatted values)
+            PrintConv => 'sprintf("%.f Kbps",$val)',
+        },
+        # combine SourceImageWidth and SourceImageHeight to SourceImageSize
+        SourceImageSize => {
+            Require => {
+                0 => 'SourceImageWidth',
+                1 => 'SourceImageHeight',
+            },
+            ValueConv => '$val[0] . "x" . $val[1]',
+        },
+        # calculate physical optimal Bitrate based on width and height
+        AvgBitrateOptimal => {
+            Require => {
+                0 => 'ImageWidth',
+                1 => 'ImageHeight',
+                2 => 'AvgBitrate',
+            },
+            ValueConv => '$val[0]*$val[1]/350',
+            # (the @prt array contains print-formatted values)
+            PrintConv => 'sprintf("%.f Kbps",$val)',
+        },
+        # calculate physical tolerable Bitrate based on width and height 
+        AvgBitrateOK => {
+            Require => {
+                0 => 'ImageWidth',
+                1 => 'ImageHeight',
+                2 => 'AvgBitrate',
+            },
+            ValueConv => '$val[0]*$val[1]/260',
+            # (the @prt array contains print-formatted values)
+            PrintConv => 'sprintf("%.f Kbps",$val)',
+        },
+        # calculate saving filesize percent to optimal 
+        AvgBRatOptSavePercent => {
+            Require => {
+                0 => 'AvgBitrateOptimal',
+                1 => 'AvgBitrateCalc',
+                2 => 'AvgBitrate',
+            },
+            ValueConv => '$val[0] >= $val[1] ? 0.0 : (1-$val[0]/$val[1])*100',
+            # (the @prt array contains print-formatted values)
+            PrintConv => 'sprintf("%.1f %%",$val)',
+        },
+        # calculate saving filesize to optimal 
+        AvgBRatOptSaveMB => {
+            Require => {
+                0 => 'AvgBRatOptSavePercent',
+                1 => 'FileSize',
+                2 => 'AvgBitrate',
+            },
+            ValueConv => '($val[0]*$val[1])/(100*1024*1024)',
+            # (the @prt array contains print-formatted values)
+            PrintConv => 'sprintf("%.1f MB",$val)',
+        },
+        # calculate saving filesize percent to OK 
+        AvgBRatOKSavePercent => {
+            Require => {
+                0 => 'AvgBitrateOK',
+                1 => 'AvgBitrateCalc',
+                2 => 'AvgBitrate',
+            },
+            ValueConv => '$val[0] >= $val[1] ? 0.0 : (1-$val[0]/$val[1])*100',
+            # (the @prt array contains print-formatted values)
+            PrintConv => 'sprintf("%.1f %%",$val)',
+        },
+        # calculate saving filesize to OK 
+        AvgBRatOKSaveMB => {
+            Require => {
+                0 => 'AvgBRatOKSavePercent',
+                1 => 'FileSize',
+                2 => 'AvgBitrate',
+            },
+            ValueConv => '($val[0]*$val[1])/(100*1024*1024)',
+            # (the @prt array contains print-formatted values)
+            PrintConv => 'sprintf("%.1f MB",$val)',
+        },
+        # [advanced] select smallest JPEG preview image
+        PreviewImageBig => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'ThumbnailImage',
+                1 => 'CoverArt',
+                2 => 'UnknownThumbnail',
+                3 => 'UnknownThumbnail (1)',
+                4 => 'UnknownThumbnail (2)',
+                5 => 'PreviewImage',
+                6 => 'ID3:Private',
+                7 => 'ID3:Picture',
+                8 => 'ID3:FRONT_COVER',
+                9 => 'MPImage3',
+               10 => 'JpgFromRaw',
+             },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $bigImage, $len, $bigLen);
+                foreach $image (@$val) {
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                    # save largest image
+                    next if defined $bigLen and $bigLen >= $len;
+                    $bigLen = $len;
+                    $bigImage = $image;
+                }
+                return $bigImage;
+           },
+        },
+        # [advanced] select name largest JPEG preview image
+        PreviewImageBigName => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'ThumbnailImage',
+                1 => 'CoverArt',
+                2 => 'UnknownThumbnail',
+                3 => 'UnknownThumbnail (1)',
+                4 => 'UnknownThumbnail (2)',
+                5 => 'PreviewImage',
+                6 => 'ID3:Private',
+                7 => 'ID3:Picture',
+                8 => 'ID3:FRONT_COVER',
+                9 => 'MPImage3',
+               10 => 'JpgFromRaw',
+            },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $len, $bigLen, $bigName);
+                my @names = ('ThumbnailImage', 'CoverArt', 'UnknownThumbnail', 'UnknownThumbnail (1)', 'UnknownThumbnail (2)', 'PreviewImage', 'ID3:Private', 'ID3:Picture', 'ID3:FRONT_COVER', 'MPImage3', 'JpgFromRaw');
+                my $pos = -1;
+                foreach $image (@$val) {
+                    $pos += 1;
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                    # save largest image
+                    next if defined $bigLen and $bigLen >= $len;
+                    $bigLen = $len;
+                    $bigName = $names[$pos];
+               }
+               return $bigName;
+           },
+        },
+        # [advanced] select size largest JPEG preview image
+        PreviewImageBigSize => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'ThumbnailImage',
+                1 => 'CoverArt',
+                2 => 'UnknownThumbnail',
+                3 => 'UnknownThumbnail (1)',
+                4 => 'UnknownThumbnail (2)',
+                5 => 'PreviewImage',
+                6 => 'ID3:Private',
+                7 => 'ID3:Picture',
+                8 => 'ID3:FRONT_COVER',
+                9 => 'MPImage3',
+               10 => 'JpgFromRaw',
+            },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $len, $bigLen);
+                foreach $image (@$val) {
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                    next if defined $bigLen and $bigLen >= $len;
+                    $bigLen = $len;
+               }
+               return $bigLen;
+           },
+        },
+        # [advanced] select smallest JPEG preview image
+        PreviewImageSmall => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'ThumbnailImage',
+                1 => 'CoverArt',
+                2 => 'UnknownThumbnail',
+                3 => 'UnknownThumbnail (1)',
+                4 => 'UnknownThumbnail (2)',
+                5 => 'PreviewImage',
+                6 => 'ID3:Private',
+                7 => 'ID3:Picture',
+                8 => 'ID3:FRONT_COVER',
+                9 => 'MPImage3',
+               10 => 'JpgFromRaw',
+             },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $smallImage, $len, $smallLen);
+                foreach $image (@$val) {
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                    # save largest image
+                    next if defined $smallLen and $smallLen <= $len;
+                    $smallLen = $len;
+                    $smallImage = $image;
+                }
+                return $smallImage;
+           },
+        },
+        # [advanced] select name of smallest preview image
+        PreviewImageSmallName => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'ThumbnailImage',
+                1 => 'CoverArt',
+                2 => 'UnknownThumbnail',
+                3 => 'UnknownThumbnail (1)',
+                4 => 'UnknownThumbnail (2)',
+                5 => 'PreviewImage',
+                6 => 'ID3:Private',
+                7 => 'ID3:Picture',
+                8 => 'ID3:FRONT_COVER',
+                9 => 'MPImage3',
+               10 => 'JpgFromRaw',
+             },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $len, $smallLen, $smallName);
+                my @names = ('ThumbnailImage', 'CoverArt', 'UnknownThumbnail', 'UnknownThumbnail (1)', 'UnknownThumbnail (2)', 'PreviewImage', 'ID3:Private', 'ID3:Picture', 'ID3:FRONT_COVER', 'MPImage3', 'JpgFromRaw');
+                my $pos = -1;
+                foreach $image (@$val) {
+                    $pos += 1;
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                    next if defined $smallLen and $smallLen <= $len;
+                    $smallLen = $len;
+                    $smallName = $names[$pos];
+                }
+                return $smallName;
+           },
+        },
+        # [advanced] select size of smallest preview image
+        PreviewImageSmallSize => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'ThumbnailImage',
+                1 => 'CoverArt',
+                2 => 'UnknownThumbnail',
+                3 => 'UnknownThumbnail (1)',
+                4 => 'UnknownThumbnail (2)',
+                5 => 'PreviewImage',
+                6 => 'ID3:Private',
+                7 => 'ID3:Picture',
+                8 => 'ID3:FRONT_COVER',
+                9 => 'MPImage3',
+               10 => 'JpgFromRaw',
+             },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $len, $smallLen);
+                foreach $image (@$val) {
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                    next if defined $smallLen and $smallLen <= $len;
+                    $smallLen = $len;
+                }
+                return $smallLen;
+           },
+        },
+        # [advanced] count preview images
+        PreviewImageCount => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'ThumbnailImage',
+                1 => 'CoverArt',
+                2 => 'UnknownThumbnail',
+                3 => 'UnknownThumbnail (1)',
+                4 => 'UnknownThumbnail (2)',
+                5 => 'PreviewImage',
+                6 => 'ID3:Private',
+                7 => 'ID3:Picture',
+                8 => 'ID3:FRONT_COVER',
+                9 => 'MPImage3',
+               10 => 'JpgFromRaw',
+            },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $countImage);
+				$countImage = 0;
+                foreach $image (@$val) {
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $countImage += 1;
+                }
+                return $countImage;
+           },
+        },
+        # [advanced] size preview images
+        PreviewImageInfo => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'ThumbnailImage',
+                1 => 'CoverArt',
+                2 => 'UnknownThumbnail',
+                3 => 'UnknownThumbnail (1)',
+                4 => 'UnknownThumbnail (2)',
+                5 => 'PreviewImage',
+                6 => 'ID3:Private',
+                7 => 'ID3:Picture',
+                8 => 'ID3:FRONT_COVER',
+                9 => 'MPImage3',
+               10 => 'JpgFromRaw',
+            },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $countInfo);
+                my @names = ('ThumbnailImage', 'CoverArt', 'UnknownThumbnail', 'UnknownThumbnail (1)', 'UnknownThumbnail (2)', 'PreviewImage', 'ID3:Private', 'ID3:Picture', 'ID3:FRONT_COVER', 'MPImage3', 'JpgFromRaw');
+                my $pos = -1;
+                foreach $image (@$val) {
+                    $pos += 1;
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                    $countInfo = (defined($countInfo) ? $countInfo . ", " : "") .  $names[$pos] . ": ". sprintf("%.f KB",$len/1024);
+                }
+                return $countInfo;
+           },
+        },
+        #  size UnknownThumbnail
+        UnknownThumbnailSize => {
+        #   Groups => { 2 => 'Preview' },
+            Desire => {
+                0 => 'UnknownThumbnail',
+            },
+            # ValueConv may also be a code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $len);
+                foreach $image (@$val) {
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or "Binary data" if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                 }
+                return $len;
+            },
+            # (the @prt array contains print-formatted values)
+            PrintConv => 'sprintf("%.1f KB",$val/1024)',
+        },
+        #  is ThumbnailImageContainsSmallThumbnail
+        ThumbnailImageContainsSmallThumbnail => {
+            Require => {
+                0 => 'ThumbnailImage',
+                1 => 'ThumbnailImageContainsSmallThumbnailOriginal',
+            },
+            ValueConv => '$val[1]',
+        },
+        # show TextOnImageObenLinks
+        TextOnImageObenLinks => {
+            Desire => {
+                0 => 'DateFormatiert',
+                1 => 'Country',
+                2 => 'State',
+                3 => 'City',
+                4 => 'Location',
+                5 => 'DateTimeOriginal',
+                6 => 'DatePrecision',
+            },
+            ValueConv => '"=» " . (defined($val[0]) and length($val[0]) > 0 ? $val[0] : $val[5] . " (nicht formatiert, DatePrecision ist >". defined($val[6])?$val[6] : "" ."<)") . " =» " . (defined($val[1]) ? $val[1] : "") . " =» " . (defined($val[2]) ? $val[2] : "") . " =» " . (defined($val[3]) ? $val[3] : "") . (defined($val[4]) and length($val[4]) > 0 ? " =» " . $val[4] : "") . " =«"',
+        },
+        # show TextOnImageUntenMitte: ImageDescriptionDurchschauMimik: oberste Zeile, Label: mittlere Zeile (falls vorhanden), Nickname: untere Zeile (falls vorhanden)
+        TextOnImageUntenMitte => {
+            Desire => {
+                0 => 'ImageDescriptionDurchschauMimik',
+                1 => 'Label',
+                2 => 'Nickname',
+            },
+            ValueConv => '"=» " . $val[0] . (defined($val[1]) and length($val[1]) > 0 ? " =» " . $val[1] : "") . (defined($val[2]) and length($val[2]) > 0 ? " =» " . $val[2] : "") . " =«"',
+        },
+        # PixelPerImage: ImageWidth * ImageHeight
+        PixelPerImage => {
+            Require => {
+                0 => 'ImageWidth',
+                1 => 'ImageHeight',
+            },
+            ValueConv => '($val[0]*$val[1])',
+        },
+        # ImageFileSizeSoll
+        ImageFileSizeSoll => {
+            Require => {
+                0 => 'PixelPerImage',
+        # um nur JPEGs auszuwählen        
+                1 => 'EncodingProcess',
+            },
+            ValueConv => '($val[0] < 50000 ? $val[0] * 1.5 : ($val[0] < 100000 ? $val[0] : ($val[0] < 500000 ? $val[0] / 1.15 : ($val[0] < 2000000 ? $val[0] / 1.3 : ($val[0] < 50000000 ? $val[0] / 1.5 : ($val[0] < 15000000 ? $val[0] / 1.75 : $val[0] / 2))))))',
+            PrintConv => 'sprintf("%.f",$val)',
+        },
+        # FaktorImageFileSizeIstZuSoll
+        FaktorImageFileSizeIstZuSoll => {
+            Require => {
+                0 => 'FileSize',
+                1 => 'ImageFileSizeSoll',
+            },
+            ValueConv => '($val[0]/$val[1])',
+            PrintConv => 'sprintf("%.2f",$val)',
+        },
+        # **** ADD ADDITIONAL COMPOSITE TAG DEFINITIONS HERE ****
+    },
+    'Image::ExifTool::IPTC::ApplicationRecord' => {
+        200 => {
+            Name => 'DatePrecision',
+            Format => 'string[0,1]',
+        },
+        201 => {
+            Name => 'TextOnImage',
+            Format => 'string[0,50]',
+        },
+        202 => {
+            Name => 'ModelNotice',
+            Format => 'string[0,1]',
+        },
+        203 => {
+            Name => 'DateFormatiert',
+            Format => 'string[0,20]',
+        },
+        204 => {
+            Name => 'ThumbnailImageContainsSmallThumbnailOriginal',
+            Format => 'string[0,1]',
+        },
+       	210 => {
+            Name => 'ScanInfo',
+            Format => 'string[0,100]',
+        },
+       	211 => {
+            Name => 'MakeOriginal',
+            Format => 'string[0,30]',
+        },
+       	212 => {
+            Name => 'ModelOriginal',
+            Format => 'string[0,50]',
+        },
+       	213 => {
+            Name => 'SerialNumberOriginal',
+            Format => 'string[0,30]',
+        },
+      	214 => {
+            Name => 'DateTimeOriginalRange',
+            Format => 'string[0,100]',
+        },
+      	215 => {
+            Name => 'ImageQuality',
+            Format => 'string[0,3]',
+        },
+      	216 => {
+            Name => 'AlbumIfImageDescriptionEmpty',
+            Format => 'string[0,1]',
+        },
+      	217 => {
+            Name => 'PreSelectedTitle',
+            Format => 'string[0,1]',
+        },
+       	220 => {
+            Name => 'ScanCreateDate',
+            Format => 'string[0,30]',
+        },
+        221 => {
+            Name => 'ScanMake',
+            Format => 'string[0,30]',
+        },
+        222 => {
+            Name => 'ScanModel',
+            Format => 'string[0,50]',
+        },
+        223 => {
+            Name => 'ScanSerialNumber',
+            Format => 'string[0,50]',
+        },
+        224 => {
+            Name => 'ScanLensID',
+            Format => 'string[0,50]',
+        },
+        225 => {
+            Name => 'ScanStammNummer',
+            Format => 'string[0,50]',
+        },
+        226 => {
+            Name => 'ScanAperture',
+            Format => 'string[0,10]',
+        },
+       	227 => {
+            Name => 'ScanExposureTime',
+            Format => 'string[0,10]',
+        },
+       	228 => {
+            Name => 'ScanExposureProgram',
+            Format => 'string[0,30]',
+        },
+       	229 => {
+            Name => 'ScanFocusMode',
+            Format => 'string[0,30]',
+        },
+       	230 => {
+            Name => 'ScanFocalLength',
+            Format => 'string[0,30]',
+        },
+       	231 => {
+            Name => 'ScanISO',
+            Format => 'string[0,10]',
+        },
+       	232 => {
+            Name => 'ScanAblage',
+            Format => 'string[0,80]',
+        },
+       	233 => {
+            Name => 'ScanVerzeichnis',
+            Format => 'string[0,120]',
+        },
+       	234 => {
+            Name => 'ScanAlbum',
+            Format => 'string[0,100]',
+        },
+       	235 => {
+            Name => 'ScanLfdNrInAblage',
+            Format => 'string[0,3]',
+        },
+       	236 => {
+            Name => 'ScanVonDatum',
+            Format => 'string[0,20]',
+        },
+       	237 => {
+            Name => 'ScanBisDatum',
+            Format => 'string[0,20]',
+        },
+         # **** ADD ADDITIONAL ApplicationRecord TAG DEFINITIONS HERE ****
+    },
+ );
+#end

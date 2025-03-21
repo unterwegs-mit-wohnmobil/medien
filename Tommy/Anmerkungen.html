@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Anmerkungen und Hinweise</title>
+</head>
+<body>
+<table border="0" width="100%">
+  <tr>
+    <td width="10%"><p align="left"><a href="index.htm"><big>zur&uuml;ck</big></a></p></td>
+    <td><h2 align="center"><big>Anmerkungen und Hinweise</big></h2></td>
+  </tr>
+</table>
+<div class="container" id="myNotes">
+<p><big><big><a href="https://hunde_best_of.de.cool">Diese Webseite</a> pr&auml;sentiert die Inhalte ohne Javascript (nur HTML5 und CSS werden verwendet) und Cookies und müsste mit jedem Web-Browser, jeder Sicherheitseinstellung, jedem Betriebssystem und auf jedem Display anzeigt werden können.</big></big></p>
+<p><big><big>Die Bildergalerien funktionieren alle nach dem gleichen Muster. Nach Auswahl eines Bildes startet die Diashow, Bildwechsel nach 5 Sekunden.</big> Durch Anklicken der Bildmitte kann die Diashow ausgeschaltet und bei nochmaligem Anklicken wieder eingeschaltet werden. <big>Bl&auml;ttern erfolgt durch Klicken links oder rechts</big> (auf dem Bild)<big>. Wischen funktioniert nur auf Touchscreens (Smartphones, Tablets, etc.) und falls Javascript erlaubt ist. Weitere Details zu Navigationsm&ouml;glichkeiten siehe <a href="_hilfe.html">hier</a>.</big></big></a></p>
+</div>
+<script>
+var swiper = { touchStartX: 0, touchEndX: 0, minSwipePixels: 30, detectionZone: undefined,
+swiperCallback: function() {},
+  init: function (detectionZone, callback) { swiper.swiperCallback = callback
+  detectionZone.addEventListener("touchstart", function (event) {
+    swiper.touchStartX = event.changedTouches[0].screenX; }, false);
+  detectionZone.addEventListener("touchend", function (event) {
+    swiper.touchEndX = event.changedTouches[0].screenX;
+    swiper.handleSwipeGesture(); }, false); },
+  handleSwipeGesture: function () {
+    if (swiper.touchEndX > swiper.touchStartX) { window.open("index.htm", "_self", openWindowParm) }
+  swipe: function (direction, movedPixels) { var ret = {}
+    ret.direction = direction, ret.movedPixels = movedPixels,  swiper.swiperCallback(ret) } };
+var gestureZone = document.getElementById("myNotes"); swiper.init(gestureZone, function(e) { });
+</script>
+</body>
+</html>

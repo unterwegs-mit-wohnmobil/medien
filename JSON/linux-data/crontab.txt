@@ -1,0 +1,1 @@
+@reboot /home/sajad/linux-data/scripts/remount-ntfs.sh
