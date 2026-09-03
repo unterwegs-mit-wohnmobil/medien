@@ -1,0 +1,58 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Homepage für HyongPlayer</title>
+</head>
+
+<body background="../Symbole/Hintergrund.jpg" bgcolor="#FFFFFF"
+link="#000000" vlink="#000000" alink="#000000" lang="DE">
+<table border="0" cellspacing="1" width="100%">
+    <tr>
+        <td><h2 align="left"><font face="Arial">HyongPlayer von </font><a
+        href="http://www.facebook.com/?ref=home#!/profile.php?id=100002532513202"
+        target="_blank"><font face="Arial">Johann Fischer</font></a>
+        </h2></td>
+        <td><p align="right"><img src="../Symbole/Deutsch.gif" border="0"> 
+        <a href="../../_Englisch/Index.htm" target="_top"><img src="../Symbole/Englisch.gif" border="0"></a>
+        </p></td>
+    </tr>
+</table>
+
+<hr>
+
+<pre>...\Java\jdk1.7\bin\jarsigner -verify -keystore keystore ../Jar/HyongPlayer.jar -verbose:summary -certs
+
+s k 50947 Sun Aug 25 00:12:20 CEST 2013 META-INF/MANIFEST.MF
+
+    X.509, CN=Johann Fischer, OU=privat, O=privat, L=Neusaess, ST=Bayern, C=DE (de.nss.jfi)
+    [certificate will expire on 19.11.13 16:20]
+
+    51023 Sun Aug 25 00:19:20 CEST 2013 META-INF/DE_NSS_J.SF (and 2 more)
+
+    (Signature related entries)
+
+       0 Sat Aug 24 13:51:14 CEST 2013 .settings/ (and 14 more)
+
+(Unsigned entries)
+
+smk 376 Thu Jul 05 17:18:16 CEST 2012 .classpath (and 509 more)
+
+    X.509, CN=Johann Fischer, OU=privat, O=privat, L=Neusaess, ST=Bayern, C=DE (de.nss.jfi)
+    [certificate will expire on 19.11.13 16:20]
+
+
+  s = signature was verified
+  m = entry is listed in manifest
+  k = at least one certificate was found in keystore
+  i = at least one certificate was found in identity scope
+
+jar verified.
+
+Warning:
+This jar contains entries whose signer certificate will expire within six months.
+</pre>
+</body>
+</html>

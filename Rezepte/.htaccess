@@ -1,0 +1,5 @@
+# .htaccess-Datei 
+AuthType Basic
+AuthName "Rezepte"
+AuthUserFile /home/webpages/lima-city/hyongplayer1/z_htaccess/rezepte
+# Require valid-user

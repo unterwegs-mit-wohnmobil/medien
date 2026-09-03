@@ -1,0 +1,48 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Downloadseite für HyongPlayer</title>
+</head>
+
+<body background="../../Symbole/Hintergrund.jpg"
+      bgcolor="#FFFFFF" link="#000000" vlink="#000000" alink="#000000" lang="DE">
+
+<table border="0" cellspacing="1" width="100%">
+    <tr>
+        <td><h2 align="left"><font face="Arial">HyongPlayer by </font><a
+        href="http://www.facebook.com/?ref=home#!/profile.php?id=100002532513202"
+        target="_blank"><font face="Arial">Johann Fischer</font></a>
+        </h2></td>
+        <td><p align="right"><a href="../../../_Deutsch/Index.htm" target="_top"><img src="../../Symbole/Deutsch.gif" border="0"></a>
+        <img src="../../Symbole/Englisch.gif" border="0">
+        </p></td>
+    </tr>
+</table>
+<hr>
+<div style="text-align:center"> 
+   <font size="4" face="Arial"><strong>2.Hyong</strong></font>&nbsp;&nbsp;
+   <button onclick="makeFullHD()">FullHD</button>
+   <button onclick="makeHD()">HD</button>
+   <button onclick="makeMedium()">Medium</button>
+   <button onclick="makeNormal()">Normal</button>
+   <button onclick="makeSmall()">Small</button>
+  <br> 
+  <br> 
+  <video id="video" width="640" poster="2.Hyong_Englisch.gif">
+    <source src="2.Hyong_Englisch.gif" type="video/gif">
+  </video>
+</div>
+
+<script> 
+var myVideo=document.getElementById("video"); 
+function makeFullHD(){myVideo.width=1920;}
+function makeHD(){myVideo.width=1280;}
+function makeMedium(){myVideo.width=960;} 
+function makeNormal(){myVideo.width=640;} 
+function makeSmall(){myVideo.width=320;} 
+</script> 
+</body>
+</html>

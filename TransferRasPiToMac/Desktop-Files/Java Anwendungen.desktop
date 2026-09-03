@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Java Anwendungen
+Comment=Java Anwendungen
+Icon=/home/pi/Daten/Desktop-Files/Puschkin-Logo.jpg
+Exec=java -jar /home/pi/Daten/Jar/jfi.jar
+Path=/home/pi/Daten/Jar
+Type=Application
+Encoding=UTF-8
+Terminal=false
+Categories=Utility;

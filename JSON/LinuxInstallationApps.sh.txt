@@ -1,0 +1,42 @@
+sudo apt -y update && sudo apt -y upgrade && sudo apt -y dist-upgrade -y && sudo apt -y autoremove && sudo apt -s clean
+# WLAN auf Macbook
+sudo apt-get --reinstall install bcmwl-kernel-source
+#
+sudo apt-get install -y default-jre
+sudo apt-get install -y libimage-exiftool-perl
+sudo apt-get install -y imagemagick
+sudo apt-get install -y ffmpeg
+sudo apt-get install -y sqlite3
+sudo apt-get install -y sqlitebrowser
+sudo apt-get install -y gparted
+#sudo apt-get install -y mc
+sudo apt-get install -y nmon
+sudo apt-get install -y lshw
+sudo apt-get install -y gthumb
+#sudo apt-get install -y gpsprune
+#sudo apt-get install -y gpscorrelate-gui
+#sudo apt-get install -y eog
+#sudo apt-get install -y eog-plugins
+#sudo apt-get install -y software-properties-common
+#sudo add-apt-repository ppa:danielrichter2007/grub-customizer
+sudo apt-get install -y grub-customizer
+sudo add-apt-repository ppa:oguzhaninan/stacer
+sudo apt-get install -y stacer
+# alte Kernel bereinigen
+# sudo apt-get autoremove  --purge
+sudo apt-get install -y hardinfo
+sudo apt-get install -y gnome-disk-utility
+sudo apt-get install -y hfsprogs
+sudo apt-get install -y ntfs-3g
+sudo apt-get install -y gpsbabel 
+sudo apt-get install -y gpsbabel-gui 
+sudo apt-get install -y doublecmd-gtk
+sudo apt-get install -y libreoffice 
+sudo apt-get install -y firefox
+wget https://download.xnview.com/XnViewMP-linux-x64.deb
+sudo dpkg -i XnViewMP-linux-x64.deb
+# flatpak (deutlich kleiner und schlanker als Snap)
+sudo apt -y update && sudo apt -y upgrade && sudo apt -y dist-upgrade -y && sudo apt -y autoremove && sudo apt -s clean
+sudo apt install -y flatpak
+sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+sudo flatpak install -y losslesscut
